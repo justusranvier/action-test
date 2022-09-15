@@ -1,0 +1,57 @@
+name: vcpkg
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+#        platform: [macos-11, windows-2019]
+        platform: [macos-11]
+        include:
+          - platform: macos-11
+            android_path: '/Users/runner/Library/Android'
+            dotnet_path: 'none'
+#          - platform: windows-2019
+#            android_path: 'C:\Android'
+#            dotnet_path: 'C:\Program Files\dotnet'
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - name: Set packages directory
+      run: echo "VCPKG_INSTALLED_DIR=${{ github.workspace }}/deps/vcpkg_installed/${{ matrix.platform }}" >> $GITHUB_ENV
+    - name: Show packages directory
+      run: echo '${{ env.VCPKG_INSTALLED_DIR }}'
+    - name: Get more disk space by deleting Android
+      uses: JesseTG/rm@v1.0.3
+      with:
+        path: '${{ matrix.android_path }}'
+    - name: Get more disk space by deleting .NET
+      uses: JesseTG/rm@v1.0.3
+      with:
+        path: '${{ matrix.dotnet_path }}'
+    - name: Install missing dependencies (macOS)
+      if: ${{ runner.os }} == 'macOS'
+      run: |
+        brew install automake
+    - name: Checkout source
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: '0'
+        submodules: 'recursive'
+    - name: Update cmake
+      uses: lukka/get-cmake@latest
+    - name: Run vcpkg
+      uses: lukka/run-vcpkg@v10
+      with:
+        vcpkgDirectory: '${{ github.workspace }}/deps/vcpkg'
+        vcpkgJsonGlob: '**/vcpkg.json'
+        runVcpkgInstall: true
+    - name: Compress packages
+      run: |
+        tar -czpf '${{ github.workspace }}/${{ matrix.platform }}.tar.gz' -C '${{ github.workspace }}/deps/vcpkg_installed' '${{ matrix.platform }}'
+    - name: Upload packages
+      uses: actions/upload-artifact@v3
+      with:
+        name: 'packages-${{ matrix.platform }}'
+        path: '${{ github.workspace }}/${{ matrix.platform }}.tar.gz'

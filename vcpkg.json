@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "opentxs",
+  "version": "1",
+  "dependencies": [
+    "boost-asio",
+    "boost-beast",
+    "boost-bind",
+    "boost-circular-buffer",
+    "boost-container",
+    "boost-core",
+    "boost-dynamic-bitset",
+    "boost-endian",
+    "boost-exception",
+    "boost-interprocess",
+    "boost-iostreams",
+    "boost-json",
+    "boost-lexical-cast",
+    "boost-multiprecision",
+    "boost-program-options",
+    "boost-stacktrace",
+    "boost-system",
+    "boost-thread",
+    "boost-type-index",
+    "gtest",
+    "libsodium",
+    "lmdb",
+    "openssl",
+    "protobuf",
+    "pthread",
+    {
+      "name": "qtbase",
+      "default-features": false,
+      "features": [ "doubleconversion", "freetype", "gui", "network", "openssl", "testlib", "thread", "widgets" ]
+    },
+    "qtdeclarative",
+    "sqlite3",
+    {
+      "name": "zeromq",
+      "features": [ "sodium" ]
+    }
+  ]
+}
