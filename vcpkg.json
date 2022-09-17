@@ -3,7 +3,10 @@
   "name": "opentxs",
   "version": "1",
   "dependencies": [
-    "boost-asio",
+    {
+      "name": "boost-asio",
+      "features": [ "ssl" ]
+    },
     "boost-beast",
     "boost-bind",
     "boost-circular-buffer",
@@ -28,12 +31,7 @@
     "openssl",
     "protobuf",
     "pthread",
-    {
-      "name": "qtbase",
-      "default-features": false,
-      "features": [ "doubleconversion", "freetype", "gui", "network", "openssl", "testlib", "thread", "widgets" ]
-    },
-    "qtdeclarative",
+    "qtbase",
     "sqlite3",
     {
       "name": "zeromq",
