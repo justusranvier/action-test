@@ -16,7 +16,7 @@ jobs:
             triplet: 'x64-osx'
           - platform: windows-2019
             vcpkg: 'C:\vcpkg'
-            triplet: 'x64-windows-static'
+            triplet: 'x64-windows'
     env:
       VCPKG_COMMIT_ID: 'acc3bcf76b84ae5041c86ab55fe138ae7b8255c7'
       VCPKG_ROOT: '${{ matrix.vcpkg }}'
@@ -25,13 +25,24 @@ jobs:
     steps:
     - name: Get more disk space
       run:  |
+        rm -rvf '${GOROOT_1_17_X64}'
+        rm -rvf '${GOROOT_1_18_X64}'
+        rm -rvf '${GOROOT_1_19_X64}'
+        rm -rvf '${JAVA_HOME_11_X64}'
+        rm -rvf '${JAVA_HOME_13_X64}'
+        rm -rvf '${JAVA_HOME_17_X64}'
+        rm -rvf '${JAVA_HOME_8_X64}'
         rm -rvf '${{ matrix.vcpkg }}'
-        rm -rvf "C:\Android"
-        rm -rvf "C:\Program Files\dotnet"
-        rm -rvf "/Users/runner/Library/Android"
-        rm -rvf "${JAVA_HOME_8_X64}"
-        rm -rvf "${JAVA_HOME_11_X64}"
-        rm -rvf "${JAVA_HOME_13_X64}"
+        rm -rvf '/Users/runner/Library/Android'
+        rm -rvf 'C:\Android'
+        rm -rvf 'C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools'
+        rm -rvf 'C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools'
+        rm -rvf 'C:\Program Files\dotnet'
+        rm -rvf 'C:\Program Files\dotnet'
+        rm -rvf 'C:\SeleniumWebDrivers'
+        rm -rvf 'C:\selenium'
+        rm -rvf 'C:\tools\Apache24'
+        rm -rvf 'C:\tools\nginx-1.23.1'
       shell: bash
       continue-on-error: true
     - name: Install missing dependencies
